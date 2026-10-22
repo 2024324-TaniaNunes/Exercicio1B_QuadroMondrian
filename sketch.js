@@ -1,8 +1,8 @@
 // --- PARTE B: parâmetros da desestabilização ---
-let fase;              // fase aleatória (único uso de random)
-const VELOCIDADE = 0.004;   // quão lento é o movimento
-const DESLOC_MAX = 6;       // deslocamento máximo do azul (px)
-const OSC_COR = 22;         // amplitude da oscilação de cor
+let fase;                   // fase aleatória (único uso de random)
+const VELOCIDADE = 0.01;    // quão lento é o movimento
+const DESLOC_MAX = 14;      // deslocamento máximo do azul (px)
+const OSC_COR = 60;         // amplitude da oscilação de cor
 
 function setup() {
   let canvas = createCanvas(800, 784);
@@ -28,16 +28,16 @@ function draw() {
 function desenharAzulVivo() {
   let t = frameCount * VELOCIDADE + fase;
 
-  // noise() devolve 0..1 de forma suave -> mapeado para -1..1
-  let n1 = noise(t) * 2 - 1;
-  let n2 = noise(t + 100) * 2 - 1;
-  let n3 = noise(t + 200) * 2 - 1;
+  // noise() concentra-se à volta de 0.5, por isso amplifico o contraste
+  let n1 = constrain((noise(t) - 0.5) * 3, -1, 1);
+  let n2 = constrain((noise(t + 100) - 0.5) * 3, -1, 1);
+  let n3 = constrain((noise(t + 200) - 0.5) * 3, -1, 1);
 
   // deslocamento lento do bloco
   let dx = n1 * DESLOC_MAX;
   let dy = n2 * DESLOC_MAX * 0.6;
 
-  // oscilação de cor quase imperceptível
+  // oscilação de cor
   let r = 20 + n3 * OSC_COR * 0.4;
   let g = 32 + n3 * OSC_COR * 0.7;
   let b = 135 + n3 * OSC_COR;
